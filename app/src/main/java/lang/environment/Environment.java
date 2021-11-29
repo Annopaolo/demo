@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 
 import io.vavr.control.Either;
+import lang.models.Block;
 import lang.utils.AlreadyDefinedException;
 import lang.utils.DemoException;
 import lang.utils.NotDefinedException;
@@ -12,11 +13,13 @@ import lang.utils.NotDefinedException;
 public class Environment implements Cloneable {
 
     private LinkedList<HashMap<String, Either<Integer, Boolean>>> store;
+    private static HashMap<String, Block> procTable;
     // private static HashMap<String, LinkedList<Either<Integer, Boolean>>>
     // chanTable;
 
     public Environment() {
         store = new LinkedList<>();
+        procTable = new HashMap<>();
         // chanTable = new HashMap<>();
     }
 
@@ -57,6 +60,23 @@ public class Environment implements Cloneable {
             }
         }
         throw new NotDefinedException("Variable not defined: " + id);
+    }
+
+    public void newProcedure(String id, Block body) throws DemoException {
+        if (procTable.containsKey(id)) {
+            throw new NotDefinedException("Procedure already defined: " + id);
+        } else {
+            procTable.put(id, body);
+            return;
+        }
+    }
+
+    public Block getProcedure(String id) throws DemoException {
+        if (procTable.containsKey(id)) {
+            return procTable.get(id);
+        } else {
+            throw new NotDefinedException("Procedure not defined: " + id);
+        }
     }
 
     // public void declareChannel(String id) throws DemoException {

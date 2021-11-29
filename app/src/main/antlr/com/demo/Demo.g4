@@ -2,6 +2,32 @@ grammar Demo;
 
 @header { package com.demo; }
 
+block: '{' statement* '}';
+
+statement:
+	print ';'
+	| ifthenelse
+	| assignment
+	| declaration
+	| loop
+	| spawn ';'
+	| procedurecall ';';
+
+print: 'print' exp;
+
+ifthenelse:
+	'if' '(' boolExp ')' then = block 'else' els = block;
+
+assignment: variable '=' exp ';';
+
+declaration: variable ':=' exp ';';
+
+loop: 'while' '(' boolExp ')' block;
+
+spawn: 'spawn' variable;
+
+procedurecall: variable;
+
 exp: arithmExp | boolExp;
 
 arithmExp:

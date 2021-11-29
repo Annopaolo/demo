@@ -16,7 +16,9 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.TokenStream;
 
+import io.vavr.control.Either;
 import lang.environment.Environment;
+import lang.models.Block;
 import lang.models.DemoVisitorImpl;
 
 public class App {
@@ -35,12 +37,12 @@ public class App {
             parser.setBuildParseTree(true);
             // Build custom visitor
             DemoVisitorImpl visitor = new DemoVisitorImpl();
-            // // Refine the AST
-            // Block ast = (Block) visitor.visit(parser.block());
-            // // Set a new variable environment
-            // Environment env = new Environment();
-            // // Run the program
-            // Either<Integer, Boolean> res = ast.eval(env);
+            // Refine the AST
+            Block ast = (Block) visitor.visit(parser.block());
+            // Set a new variable environment
+            Environment env = new Environment();
+            // Run the program
+            Either<Integer, Boolean> res = ast.eval(env);
         } catch (IOException ioe) {
             System.out.println("File not found \n " + ioe);
         } catch (Exception e) {

@@ -3,7 +3,65 @@ package lang.models;
 import com.demo.DemoBaseVisitor;
 import com.demo.DemoParser.*;
 
+import io.vavr.collection.List;
+
 public class DemoVisitorImpl extends DemoBaseVisitor<Node> {
+
+    @Override
+    public Node visitBlock(BlockContext ctx) {
+        List<Statement> children = List.ofAll(ctx.statement().stream().map(stmtCtx -> visitStatement(stmtCtx)));
+        return new Block(children);
+    }
+
+    @Override
+    public Statement visitStatement(StatementContext ctx) {
+        return (Statement) visit(ctx.getChild(0));
+    }
+
+    @Override
+    public Node visitPrint(PrintContext ctx) {
+        // Get the expression
+        Expression exp = (Expression) visit(ctx.exp());
+        // build the statement
+        return new Print(exp);
+    }
+
+    @Override
+    public Node visitIfthenelse(IfthenelseContext ctx) {
+        Expression condition = (Expression) visit(ctx.boolExp());
+        Block then = (Block) visitBlock(ctx.then);
+        Block els = (Block) visitBlock(ctx.els);
+        return new IfThenElse(condition, then, els);
+    }
+
+    @Override
+    public Node visitAssignment(AssignmentContext ctx) {
+        // get expression
+        Expression exp = (Expression) visit(ctx.exp());
+        // get id of variable
+        String id = ctx.variable().getText();
+        // construct assignment expression
+        return new Assignment(id, exp);
+    }
+
+    @Override
+    public Node visitDeclaration(DeclarationContext ctx) {
+        // get expression
+        Expression exp = (Expression) visit(ctx.exp());
+        // get id of variable
+        String id = ctx.variable().getText();
+        // construct assignment expression
+        return new Declaration(id, exp);
+    }
+
+    @Override
+    public Node visitLoop(LoopContext ctx) {
+        // get expression
+        Expression condition = (Expression) visit(ctx.boolExp());
+        // get body
+        Block body = (Block) visit(ctx.block());
+        return new Loop(condition, body);
+    }
 
     @Override
     public Node visitExp(ExpContext ctx) {

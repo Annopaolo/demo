@@ -1,0 +1,17 @@
+{
+    fst := 1;
+    print fst;
+    snd := 1;
+    print snd;
+
+    current := 2;
+    n := 10;
+
+   while (current < n){
+        trd := fst+snd;
+        print trd;
+        fst = snd;
+        snd = trd; 
+        current = current + 1;
+    }
+}
