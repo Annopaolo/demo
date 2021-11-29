@@ -8,6 +8,32 @@ import io.vavr.collection.List;
 public class DemoVisitorImpl extends DemoBaseVisitor<Node> {
 
     @Override
+    public Node visitProgram(ProgramContext ctx) {
+        List<Procedure> procs = List
+                .ofAll(ctx.procedure().stream().map(procCtx -> (Procedure) visitProcedure(procCtx)));
+        return new Program(procs);
+    }
+
+    @Override
+    public Node visitProcedure(ProcedureContext ctx) {
+        String id = ctx.variable().getText();
+        Block body = (Block) visitBlock(ctx.block());
+        return new Procedure(id, body);
+    }
+
+    @Override
+    public Node visitProcedurecall(ProcedurecallContext ctx) {
+        String procedureId = ctx.variable().getText();
+        return new ProcedureCall(procedureId);
+    }
+
+    @Override
+    public Node visitSpawn(SpawnContext ctx) {
+        String procedureId = ctx.variable().getText();
+        return new Spawn(procedureId);
+    }
+
+    @Override
     public Node visitBlock(BlockContext ctx) {
         List<Statement> children = List.ofAll(ctx.statement().stream().map(stmtCtx -> visitStatement(stmtCtx)));
         return new Block(children);

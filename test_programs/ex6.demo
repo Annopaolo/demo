@@ -1,0 +1,23 @@
+proc main{
+    n := 10;
+    fibonacci;
+}
+
+proc fibonacci{
+    fst := 1;
+    snd := 1;
+
+    if (n == 1 OR n == 2) {
+        print 1;
+    } else {
+        trd := fst+snd;
+        i := 2;
+        while (i < n){
+            trd = fst+snd;
+            fst = snd;
+            snd = trd; 
+            i = i + 1;
+        }
+        print trd;
+    }
+}

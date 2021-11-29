@@ -1,0 +1,13 @@
+proc main{
+    i := 3+4;
+    docycle;
+    print i;
+}
+
+proc docycle{
+    while (i <= 10) {
+        print (i <= 10);
+        print i;
+        i = i +1;
+    }
+}

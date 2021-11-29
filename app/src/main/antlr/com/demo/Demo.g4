@@ -2,6 +2,10 @@ grammar Demo;
 
 @header { package com.demo; }
 
+program: procedure*;
+
+procedure: 'proc' name = variable body = block;
+
 block: '{' statement* '}';
 
 statement:
