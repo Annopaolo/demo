@@ -25,7 +25,7 @@ $ gradle build
 
 Run the following command into `app/build/classes/java/main/` to try out the grammar on user-supplied input:
 ```
-$ grun com.demo.Demo equation -tokens -gui
+$ grun com.demo.Demo rule_to_try -tokens -gui
 <input>
 ^D
 ```
